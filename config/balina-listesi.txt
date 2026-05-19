@@ -1,0 +1,27 @@
+# X Balina Hesapları — Reply Ekonomisi Hedefleri
+# Bu hesaplar tweet attığında ilk 10 dakikada kaliteli reply at.
+# Reply formülü: (1) onay cümlesi + (2) kendi katkın/karşı görüş + (3) okuyucuya değer
+
+# ====== Türkiye (10) ======
+@hrrcnes
+@parsluci
+@gorkemcetin
+@ozanonay
+@umutaltug
+@altunyaldiz
+@emresumer
+@oguzhank9
+@hakanbiber
+@bedirhanselami
+
+# ====== Global (10) ======
+@levelsio
+@marc_louvion
+@tdinh_me
+@theo
+@dhh
+@yoheinakajima
+@rauchg
+@adamwathan
+@swyx
+@SahilLavingia

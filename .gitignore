@@ -1,0 +1,41 @@
+# Üretim verisi — kişisel, GitHub'a gitmez
+drafts/
+swipe-file/
+logs/
+data/
+pinned/
+
+# Inbox dosyaları (her cihazda farklı kullanılır)
+config/daily-metrics.md
+config/reply-inbox.md
+config/swipe-inbox.md
+
+# Niş bağlamı opsiyonel sensitive — şimdilik repo'da tut (private)
+# Eğer public repo yapacaksan bu satırı aç:
+# config/nis-baglam.md
+
+# macOS
+.DS_Store
+*.swp
+
+# Logs
+*.log
+*.out
+*.err
+
+# Env / secrets (gelecekte API key kullanırsak)
+.env
+.env.*
+*.key
+*.pem
+
+# Editor
+.vscode/
+.idea/
+*~
+
+# Obsidian — repo'ya gitmez (Obsidian vault iCloud'da ayrı yerde)
+.obsidian/
+
+# Eski "Cemal" referansları için backup'lar (varsa)
+*.bak
