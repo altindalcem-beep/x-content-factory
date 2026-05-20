@@ -12,8 +12,10 @@ AI üretir, manuel post atılır.
 | `evening_report.sh` | 21:30 hergün | Gün sonu performans + yarına input |
 | `weekly_swipe.sh` | Pazar 23:00 | Niş içi viral pattern analizi |
 
-Üretim verileri **iCloud Drive**'a yansıtılır:
+Üretim verileri **iCloud Drive** içinde tutulur:
 `~/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory/`
+
+`drafts/`, `pinned/`, `swipe-file/` klasörleri factory dizininde **symlink**'tir → script'ler doğrudan iCloud'a yazar (launchd TCC izin sorununu bypass eder).
 
 Bu sayede Mac ↔ MacBook ↔ iPhone Obsidian üzerinden tek vault.
 

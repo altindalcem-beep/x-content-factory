@@ -1,9 +1,11 @@
 # Üretim verisi — kişisel, GitHub'a gitmez
-drafts/
-swipe-file/
-logs/
-data/
-pinned/
+# Not: drafts/, pinned/, swipe-file/ install.sh tarafından iCloud'a symlink yapılır.
+# Slash'sız form hem gerçek klasörü hem symlink'i yakalar.
+drafts
+swipe-file
+pinned
+logs
+data
 
 # Inbox dosyaları (her cihazda farklı kullanılır)
 config/daily-metrics.md

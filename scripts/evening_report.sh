@@ -89,7 +89,5 @@ fi
 
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] Evening Report tamam: $OUTPUT_FILE" >> "$LOG_FILE"
 
-# iCloud'a aynalı kopya
-rsync -a "$FACTORY_DIR/drafts/" "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory/drafts/" >/dev/null 2>&1 || true
-
+# (drafts/ klasörü zaten iCloud'a symlink — ekstra sync gerekmez)
 osascript -e "display notification \"Bugünün raporu hazır + yarına input ayarlandı\" with title \"X Factory · Evening Report\" sound name \"Glass\"" 2>/dev/null || true

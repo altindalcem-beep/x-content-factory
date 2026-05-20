@@ -64,8 +64,6 @@ CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] Morning brief tamam: $DRAFT_FILE" >> "$LOG_FILE"
 
-# iCloud'a aynalı kopya (iPhone Files app'ten erişim için)
-rsync -a "$FACTORY_DIR/drafts/" "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory/drafts/" >/dev/null 2>&1 || true
-
 # macOS bildirimi
+# (drafts/, pinned/, swipe-file/ klasörleri zaten iCloud'a symlink — ekstra sync gerekmez)
 osascript -e "display notification \"Bugünün X brief'i hazır: $TODAY.md\" with title \"X Content Factory\" sound name \"Glass\""

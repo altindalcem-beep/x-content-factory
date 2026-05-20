@@ -91,7 +91,5 @@ EOF
 
 echo "[$(date +'%Y-%m-%d %H:%M:%S')] Weekly Swipe tamam: $OUTPUT_FILE (inbox arşiv: $ARCHIVE_FILE)" >> "$LOG_FILE"
 
-# iCloud'a aynalı kopya (swipe-file de iPhone'da erişilebilir)
-rsync -a "$FACTORY_DIR/swipe-file/" "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory/swipe-file/" >/dev/null 2>&1 || true
-
+# (swipe-file/ klasörü zaten iCloud'a symlink — ekstra sync gerekmez)
 osascript -e "display notification \"Hafta $WEEK_NUM swipe analizi hazır\" with title \"X Factory · Weekly Swipe\" sound name \"Glass\"" 2>/dev/null || true

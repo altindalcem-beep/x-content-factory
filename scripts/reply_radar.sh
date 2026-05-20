@@ -98,8 +98,6 @@ if [ "$MODE" = "manual" ]; then
     echo "→ Dosya: $OUTPUT_FILE"
 fi
 
-# ---------- iCloud'a aynalı kopya ----------
-rsync -a "$FACTORY_DIR/drafts/" "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory/drafts/" >/dev/null 2>&1 || true
-
 # ---------- macOS bildirim ----------
+# (drafts/ klasörü zaten iCloud'a symlink — ekstra sync gerekmez)
 osascript -e "display notification \"Reply önerileri hazır ($MODE)\" with title \"X Content Factory · Reply Radar\" sound name \"Glass\"" 2>/dev/null || true

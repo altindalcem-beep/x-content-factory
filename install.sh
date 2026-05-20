@@ -36,7 +36,31 @@ echo ""
 
 # ---------- 1. Klasör yapısı ----------
 echo "1) Klasörleri oluşturuyorum..."
-mkdir -p "$FACTORY_DIR"/{drafts,logs,data,swipe-file/inbox-archive,pinned}
+mkdir -p "$FACTORY_DIR"/{logs,data}
+
+# iCloud'daki vault klasörü (Obsidian ile paylaşılır, multi-device sync için)
+ICLOUD_VAULT="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory"
+mkdir -p "$ICLOUD_VAULT"/{drafts,pinned,swipe-file/inbox-archive}
+
+# Local drafts/, pinned/, swipe-file/ klasörleri iCloud'a symlink olarak bağla
+# Bu sayede script'ler doğrudan iCloud'a yazar, launchd TCC izin sorununu bypass eder
+for dir in drafts pinned swipe-file; do
+    target="$FACTORY_DIR/$dir"
+    icloud_path="$ICLOUD_VAULT/$dir"
+
+    if [ -L "$target" ]; then
+        echo "   $dir symlink zaten var, atlandı"
+    elif [ -d "$target" ]; then
+        # Eğer gerçek klasör varsa içeriği iCloud'a taşı, sonra symlink yap
+        rsync -a "$target/" "$icloud_path/" 2>/dev/null
+        rm -rf "$target"
+        ln -s "$icloud_path" "$target"
+        echo "   $dir → iCloud symlink (içerik taşındı)"
+    else
+        ln -s "$icloud_path" "$target"
+        echo "   $dir → iCloud symlink"
+    fi
+done
 echo "   OK"
 
 # ---------- 2. Inbox şablonları ----------
