@@ -38,8 +38,11 @@ echo ""
 echo "1) Klasörleri oluşturuyorum..."
 mkdir -p "$FACTORY_DIR"/{logs,data}
 
-# iCloud'daki vault klasörü (Obsidian ile paylaşılır, multi-device sync için)
-ICLOUD_VAULT="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Obsidian/x-factory"
+# Obsidian'ın iOS sync için kullandığı özel iCloud container'ı
+# (iCloud Drive değil — Obsidian app sandbox container'ı)
+# iOS Obsidian SADECE bu container'daki vault'ları tanıyor.
+ICLOUD_VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/x-factory"
+mkdir -p "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents"
 mkdir -p "$ICLOUD_VAULT"/{drafts,pinned,swipe-file/inbox-archive}
 
 # Local drafts/, pinned/, swipe-file/ klasörleri iCloud'a symlink olarak bağla
