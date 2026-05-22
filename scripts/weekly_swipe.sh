@@ -36,9 +36,12 @@ if [ ! -f "$SWIPE_INBOX" ] || [ ! -s "$SWIPE_INBOX" ]; then
     exit 0
 fi
 
-# En az 1 "## ..." başlığı (post girdisi) var mı?
-if ! grep -qE "^##\s+@" "$SWIPE_INBOX"; then
-    echo "[$TODAY] Swipe inbox'ta '## @hesap' başlığı yok, atlandı" >> "$LOG_FILE"
+# En az 1 GERÇEK "## @hesap" başlığı (post girdisi) var mı? Template placeholder'ı (@hesap_adi) sayılmaz.
+# Count-based: ugrep'in `-qv` davranışı POSIX'ten saptığı için pipeline değil sayım kullanılıyor.
+TOTAL_HANDLES=$(grep -cE "^##[[:space:]]+@" "$SWIPE_INBOX" 2>/dev/null) || TOTAL_HANDLES=0
+PLACEHOLDER_HANDLES=$(grep -cE "^##[[:space:]]+@hesap_adi([^a-zA-Z0-9_]|$)" "$SWIPE_INBOX" 2>/dev/null) || PLACEHOLDER_HANDLES=0
+if [ "$((TOTAL_HANDLES - PLACEHOLDER_HANDLES))" -le 0 ]; then
+    echo "[$TODAY] Swipe inbox'ta gerçek '## @hesap' yok (sadece placeholder), atlandı" >> "$LOG_FILE"
     osascript -e "display notification \"Inbox'ta swipe yok (## @hesap formatında ekle)\" with title \"X Factory · Weekly Swipe (atlandı)\"" 2>/dev/null || true
     exit 0
 fi

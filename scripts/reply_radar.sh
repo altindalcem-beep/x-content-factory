@@ -53,9 +53,12 @@ if [ "$MODE" = "batch" ]; then
         echo "[$TODAY $HHMM] Inbox dosyası yok/boş, batch atlandı" >> "$LOG_FILE"
         exit 0
     fi
-    # En az 1 "## @" başlığı var mı kontrol et — yoksa içerik yok
-    if ! grep -qE "^##\s+@" "$INBOX_FILE"; then
-        echo "[$TODAY $HHMM] Inbox'ta '## @hesap' başlığı yok, batch atlandı" >> "$LOG_FILE"
+    # En az 1 GERÇEK "## @hesap" başlığı var mı? Template placeholder'ı (@hesap_adi) sayılmaz.
+    # Count-based: ugrep'in `-qv` davranışı POSIX'ten saptığı için pipeline değil sayım kullanılıyor.
+    TOTAL_HANDLES=$(grep -cE "^##[[:space:]]+@" "$INBOX_FILE" 2>/dev/null) || TOTAL_HANDLES=0
+    PLACEHOLDER_HANDLES=$(grep -cE "^##[[:space:]]+@hesap_adi([^a-zA-Z0-9_]|$)" "$INBOX_FILE" 2>/dev/null) || PLACEHOLDER_HANDLES=0
+    if [ "$((TOTAL_HANDLES - PLACEHOLDER_HANDLES))" -le 0 ]; then
+        echo "[$TODAY $HHMM] Inbox'ta gerçek '## @hesap' yok (sadece placeholder), batch atlandı" >> "$LOG_FILE"
         exit 0
     fi
 fi
