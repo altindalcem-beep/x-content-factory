@@ -43,11 +43,11 @@ mkdir -p "$FACTORY_DIR"/{logs,data}
 # iOS Obsidian SADECE bu container'daki vault'ları tanıyor.
 ICLOUD_VAULT="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/x-factory"
 mkdir -p "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents"
-mkdir -p "$ICLOUD_VAULT"/{drafts,pinned,swipe-file/inbox-archive}
+mkdir -p "$ICLOUD_VAULT"/{drafts,pinned}
 
-# Local drafts/, pinned/, swipe-file/ klasörleri iCloud'a symlink olarak bağla
+# Local drafts/, pinned/ klasörleri iCloud'a symlink olarak bağla
 # Bu sayede script'ler doğrudan iCloud'a yazar, launchd TCC izin sorununu bypass eder
-for dir in drafts pinned swipe-file; do
+for dir in drafts pinned; do
     target="$FACTORY_DIR/$dir"
     icloud_path="$ICLOUD_VAULT/$dir"
 
@@ -86,44 +86,6 @@ EOF
     echo "   reply-inbox.md oluşturuldu"
 fi
 
-if [ ! -f "$FACTORY_DIR/config/swipe-inbox.md" ]; then
-    cat > "$FACTORY_DIR/config/swipe-inbox.md" <<'EOF'
-# Swipe Inbox
-
-Bu hafta gördüğün niş içi iyi/viral postları buraya kopyala.
-
-Format:
-
-## @hesap_adi
-Post linki: https://x.com/...
-
-Post metni...
-
----
-EOF
-    echo "   swipe-inbox.md oluşturuldu"
-fi
-
-if [ ! -f "$FACTORY_DIR/config/daily-metrics.md" ]; then
-    cat > "$FACTORY_DIR/config/daily-metrics.md" <<'EOF'
-# Günlük X Post Metrikleri
-
-Her akşam ~21:00'de X Analytics'ten bugünkü postların verilerini buraya yaz.
-
-## YYYY-MM-DD
-### Post 1 — 09:00 (Format)
-- Tweet:
-- Impression:
-- Like:
-- Repost:
-- Bookmark:
-- Reply:
-
----
-EOF
-    echo "   daily-metrics.md oluşturuldu"
-fi
-
 # ---------- 3. Script'lere executable izin ----------
 echo "3) Script'lere executable izin..."
 chmod +x "$FACTORY_DIR"/scripts/*.sh
@@ -156,7 +118,6 @@ echo ""
 echo "  2. iMac PRIMARY ise launchd'i yükle:"
 echo "     launchctl load $LAUNCHD_DIR/com.cemal.x.morning.plist"
 echo "     launchctl load $LAUNCHD_DIR/com.cemal.x.reply.plist"
-echo "     launchctl load $LAUNCHD_DIR/com.cemal.x.evening.plist"
 echo "     launchctl load $LAUNCHD_DIR/com.cemal.x.weekly.plist"
 echo ""
 echo "  3. MacBook SECONDARY ise launchd YÜKLEME — sadece manuel komut çalıştır."

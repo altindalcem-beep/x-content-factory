@@ -18,22 +18,24 @@ PROMPT_FILE="$FACTORY_DIR/prompts/morning_brief.md"
 NIS_BAGLAM="$FACTORY_DIR/config/nis-baglam.md"
 BALINA_LIST="$FACTORY_DIR/config/balina-listesi.txt"
 
-# Son 7 günün draft'larını oku (tekrar etmemek için)
+# Son 7 günün brief'lerini oku (tekrar etmemek için)
+# Sadece günlük brief dosyaları: YYYY-MM-DD.md (replies-*.md, weekreview-*.md hariç)
 # Önemli: zsh null_glob ile boş klasörde glob silinir → cat argumansız kalır → stdin'i bekler (donar)
 # Bu yüzden önce array olarak topla, boyutu kontrol et.
-DRAFT_FILES=("$FACTORY_DIR/drafts/"*.md)
+DRAFT_FILES=("$FACTORY_DIR/drafts/"[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md)
 if [ ${#DRAFT_FILES[@]} -gt 0 ]; then
     RECENT_DRAFTS=$(printf '%s\n' "${DRAFT_FILES[@]}" | sort -r | head -7 | while IFS= read -r f; do cat "$f"; echo ""; done)
 else
-    RECENT_DRAFTS="(henüz draft yok)"
+    RECENT_DRAFTS="(henüz brief yok)"
 fi
 
-# Swipe file (varsa) — niş içi viral örnekler
-SWIPE_FILES=("$FACTORY_DIR/swipe-file/"*.md)
-if [ ${#SWIPE_FILES[@]} -gt 0 ]; then
-    SWIPE_CONTENT=$(cat "${SWIPE_FILES[@]}")
+# En son haftalık review (varsa) — arc devamlılığı için
+WEEKREVIEW_FILES=("$FACTORY_DIR/drafts/"weekreview-*.md)
+if [ ${#WEEKREVIEW_FILES[@]} -gt 0 ]; then
+    LATEST_REVIEW=$(printf '%s\n' "${WEEKREVIEW_FILES[@]}" | sort -r | head -1)
+    LAST_WEEKREVIEW=$(cat "$LATEST_REVIEW")
 else
-    SWIPE_CONTENT="(swipe file boş)"
+    LAST_WEEKREVIEW="(henüz weekly review yok — ilk hafta)"
 fi
 
 # claude CLI yolu (PATH'te yoksa absolute path kullan)
@@ -55,8 +57,8 @@ CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
   echo "## Son 7 günde attığım postlar (tekrar etmemek için referans)"
   echo "$RECENT_DRAFTS"
   echo ""
-  echo "## Swipe file (niş'imde viral olmuş örnekler)"
-  echo "$SWIPE_CONTENT"
+  echo "## En son haftalık review (geçen haftanın doygunluk uyarıları + gelecek hafta önerileri)"
+  echo "$LAST_WEEKREVIEW"
   echo ""
   echo "# TASK"
   cat "$PROMPT_FILE"

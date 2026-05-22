@@ -1,25 +1,28 @@
 # X Content Factory
 
-Tek kişilik X büyüme stüdyosu. Claude Code + launchd + cron ile 4 motorlu içerik fabrikası.
-AI üretir, manuel post atılır.
+Tek kişilik X büyüme stüdyosu. Claude Code + launchd ile 3 motorlu içerik fabrikası.
+AI üretir, manuel post atılır. Cem sadece X üzerinde çalışır — hiçbir config dosyası doldurmaz.
 
 ## Mimari
 
 | Motor | Tetikleyici | İşi |
 |---|---|---|
-| `morning_brief.sh` | 07:00 hergün | Günün 3 post brief'i + reply hedefi |
-| `reply_radar.sh` | 12:00 + 17:00 / manuel | Balina hesaplara reply önerisi |
-| `evening_report.sh` | 21:30 hergün | Gün sonu performans + yarına input |
-| `weekly_swipe.sh` | Pazar 23:00 | Niş içi viral pattern analizi |
+| `morning_brief.sh` | 07:00 hergün | Günün 3 post brief'i + 10 balina için reply DNA şablonu |
+| `reply_radar.sh` | 12:00 + 17:00 / manuel | `config/reply-inbox.md`'ye yapıştırılan balina postlarına reply önerisi (telefon workflow) |
+| `weekly_review.sh` | Pazar 21:00 | Son 7 brief'in arc analizi + doygunluk uyarıları + gelecek hafta açı önerileri |
 
 Üretim verileri **Obsidian'ın iCloud container'ında** tutulur (iOS Obsidian sync için zorunlu):
 `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/x-factory/`
 
-`drafts/`, `pinned/`, `swipe-file/` klasörleri factory dizininde **symlink**'tir → script'ler doğrudan iCloud container'ına yazar (launchd TCC izin sorununu bypass eder).
+`drafts/` ve `pinned/` klasörleri factory dizininde **symlink**'tir → script'ler doğrudan iCloud container'ına yazar (launchd TCC izin sorununu bypass eder).
 
 Bu sayede Mac ↔ MacBook ↔ iPhone Obsidian üzerinden tek vault.
 
 **Önemli:** Obsidian iOS, normal `iCloud Drive` klasörlerinden vault okumuyor — sadece kendi sandbox container'ı `iCloud~md~obsidian/Documents/`'ten. Bu yüzden vault buraya konuldu.
+
+## Felsefe — Zero-Input
+
+Brief'ler, weekly review ve reply-radar batch hepsi otomatik. Cem'in tek manuel girdisi: gün içinde balina postunu görünce `config/reply-inbox.md`'ye yapıştırma (telefondan veya Mac'ten). Performans metriği toplanmıyor — qualitative arc devamlılığı ile çalışır. Manuel "Pazar X paylaşacağım" tarzı sayı vaadleri prompt seviyesinde yasak.
 
 ## Kurulum (yeni cihaz)
 
@@ -41,16 +44,15 @@ cd x-content-factory
 # 4. (PRIMARY cihaz ise) launchd'i yükle
 launchctl load ~/Library/LaunchAgents/com.cemal.x.morning.plist
 launchctl load ~/Library/LaunchAgents/com.cemal.x.reply.plist
-launchctl load ~/Library/LaunchAgents/com.cemal.x.evening.plist
 launchctl load ~/Library/LaunchAgents/com.cemal.x.weekly.plist
 launchctl list | grep com.cemal.x
-# → 4 satır görmeli
+# → 3 satır görmeli
 ```
 
 ## Cihaz rolleri
 
 **PRIMARY (iMac, sabit, hep açık):**
-- launchd 4 agent çalışır
+- launchd 3 agent çalışır
 - Brief'leri üretir, iCloud'a yazar
 
 **SECONDARY (MacBook, mobil):**
@@ -66,26 +68,24 @@ x-content-factory/
 ├── scripts/                      # ← repo
 │   ├── morning_brief.sh
 │   ├── reply_radar.sh
-│   ├── evening_report.sh
-│   └── weekly_swipe.sh
+│   └── weekly_review.sh
 ├── prompts/                      # ← repo
 │   ├── morning_brief.md
 │   ├── reply_radar.md
-│   ├── evening_report.md
-│   └── weekly_swipe.md
+│   └── weekly_review.md
 ├── config/
 │   ├── nis-baglam.md            # ← repo (private)
 │   ├── balina-listesi.txt       # ← repo
-│   ├── daily-metrics.md         # ← gitignore (lokal)
-│   ├── reply-inbox.md           # ← gitignore (lokal)
-│   └── swipe-inbox.md           # ← gitignore (lokal)
+│   └── reply-inbox.md           # ← gitignore (lokal, telefon workflow için)
 ├── launchd-templates/            # ← repo
 │   └── *.plist.template
-├── drafts/                       # ← gitignore (iCloud'a sync)
-├── swipe-file/                   # ← gitignore (iCloud'a sync)
+├── drafts/                       # ← gitignore (iCloud'a symlink)
+│   ├── YYYY-MM-DD.md            # günlük brief'ler
+│   ├── replies-YYYY-MM-DD-HHMM.md   # reply_radar çıktıları
+│   └── weekreview-YYYY-Wnn.md   # haftalık review
+├── pinned/                       # ← gitignore (iCloud'a symlink)
+│   └── storm-final.md           # Pazar Storm postu
 ├── logs/                         # ← gitignore
-├── data/                         # ← gitignore
-├── pinned/                       # ← gitignore
 ├── install.sh                    # ← repo
 ├── .gitignore                    # ← repo
 └── README.md                     # ← repo
@@ -94,9 +94,27 @@ x-content-factory/
 ## Günlük kullanım
 
 **Sabah 07:00** — bildirim gelir, Obsidian'da brief'i aç
-**Gün boyu** — balina post gördükçe `./scripts/reply_radar.sh "@hesap" "metin"`
-**Akşam 21:00** — X Analytics'ten sayılar → `config/daily-metrics.md`
+**09:00** — Post 1'i at
+**13:00** — Post 2'yi at
+**Gün boyu** — brief'teki 10 balinayı X'te takip et → biri post atınca DNA şablonuyla doğaçla reply yaz (günde 5+ hedef)
+**20:00** — Post 3'ü at
 **Pazar 20:00** — `pinned/storm-final.md` Storm'unu at
+**Pazar 21:00** — bildirim gelir, weekreview'i oku
+
+## Reply Radar workflow (telefon dahil)
+
+`reply_radar.sh` iki modlu:
+
+**Manuel (Mac):**
+```bash
+./scripts/reply_radar.sh "@hesap" "post metni..."
+```
+Anlık 2 reply önerisi stdout'a + `drafts/replies-YYYY-MM-DD-HHMM.md`'ye yazılır.
+
+**Batch (PRIMARY launchd, 12:00 + 17:00):**
+`config/reply-inbox.md`'ye yapıştırılan tüm postlara reply önerisi üretir. iPhone'dan da Obsidian/Working Copy üzerinden inbox'a yapıştırma yapılabilir → bir sonraki 12:00 ya da 17:00 cron çıktıyı drafts/'a koyar → telefondan Obsidian'da okunur.
+
+Batch çağrı, inbox'ta `## @hesap_adi` placeholder dışında gerçek girdi yoksa Claude'a boş çağrı atmaz.
 
 ## Niş
 

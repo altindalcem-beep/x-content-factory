@@ -9,7 +9,7 @@
     <array>
         <string>/bin/zsh</string>
         <string>-lc</string>
-        <string>__HOME__/x-content-factory/scripts/weekly_swipe.sh</string>
+        <string>__HOME__/x-content-factory/scripts/weekly_review.sh</string>
     </array>
 
     <key>StartCalendarInterval</key>
@@ -17,16 +17,16 @@
         <key>Weekday</key>
         <integer>0</integer>
         <key>Hour</key>
-        <integer>23</integer>
+        <integer>21</integer>
         <key>Minute</key>
         <integer>0</integer>
     </dict>
 
     <key>StandardOutPath</key>
-    <string>__HOME__/x-content-factory/logs/weekly_swipe.out</string>
+    <string>__HOME__/x-content-factory/logs/weekly_review.out</string>
 
     <key>StandardErrorPath</key>
-    <string>__HOME__/x-content-factory/logs/weekly_swipe.err</string>
+    <string>__HOME__/x-content-factory/logs/weekly_review.err</string>
 
     <key>WorkingDirectory</key>
     <string>__HOME__/x-content-factory</string>

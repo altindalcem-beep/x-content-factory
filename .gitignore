@@ -1,16 +1,13 @@
 # Üretim verisi — kişisel, GitHub'a gitmez
-# Not: drafts/, pinned/, swipe-file/ install.sh tarafından iCloud'a symlink yapılır.
+# Not: drafts/, pinned/ install.sh tarafından iCloud'a symlink yapılır.
 # Slash'sız form hem gerçek klasörü hem symlink'i yakalar.
 drafts
-swipe-file
 pinned
 logs
 data
 
 # Inbox dosyaları (her cihazda farklı kullanılır)
-config/daily-metrics.md
 config/reply-inbox.md
-config/swipe-inbox.md
 
 # Niş bağlamı opsiyonel sensitive — şimdilik repo'da tut (private)
 # Eğer public repo yapacaksan bu satırı aç:
