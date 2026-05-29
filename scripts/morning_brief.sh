@@ -41,7 +41,8 @@ fi
 # claude CLI yolu (PATH'te yoksa absolute path kullan)
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
-# Brief üret
+# Prompt'u tek dosyaya topla (retry için tekrar tekrar okunacak)
+PROMPT_INPUT=$(mktemp)
 {
   echo "# CONTEXT"
   echo ""
@@ -62,10 +63,37 @@ CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
   echo ""
   echo "# TASK"
   cat "$PROMPT_FILE"
-} | "$CLAUDE_BIN" -p --output-format text > "$DRAFT_FILE" 2>> "$LOG_FILE"
+} > "$PROMPT_INPUT"
 
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] Morning brief tamam: $DRAFT_FILE" >> "$LOG_FILE"
+# Brief üret — boş çıktıya karşı 3 deneme, mevcut iyi brief'i ASLA boşla ezme
+TMP_OUT=$(mktemp)
+ATTEMPTS=0
+MAX_ATTEMPTS=3
+while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+    ATTEMPTS=$((ATTEMPTS + 1))
+    "$CLAUDE_BIN" -p --output-format text < "$PROMPT_INPUT" > "$TMP_OUT" 2>> "$LOG_FILE" || true
+    [ -s "$TMP_OUT" ] && break
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS boş çıktı verdi, 10 sn sonra tekrar" >> "$LOG_FILE"
+    sleep 10
+done
+rm -f "$PROMPT_INPUT"
+
+# 3 denemede de boşsa: mevcut dosyaya dokunma, hata bildir, çık
+if [ ! -s "$TMP_OUT" ]; then
+    rm -f "$TMP_OUT"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de boş çıktı. Brief üretilemedi (claude usage limit / auth?)" >> "$LOG_FILE"
+    osascript -e "display notification \"BRIEF ÜRETİLEMEDİ — claude boş döndü. Manuel dene: ./scripts/morning_brief.sh\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
+    exit 1
+fi
+
+# Önsöz temizliği: claude bazen başa açıklama ekliyor — ilk '# ' (H1) satırından itibaren al
+awk 'f{print} /^# /{if(!f){f=1; print}}' "$TMP_OUT" > "$DRAFT_FILE"
+# H1 bulunamadıysa ham çıktıyı kullan (boş bırakma)
+[ -s "$DRAFT_FILE" ] || cp "$TMP_OUT" "$DRAFT_FILE"
+rm -f "$TMP_OUT"
+
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] Morning brief tamam: $DRAFT_FILE ($ATTEMPTS. denemede)" >> "$LOG_FILE"
 
 # macOS bildirimi
-# (drafts/, pinned/, swipe-file/ klasörleri zaten iCloud'a symlink — ekstra sync gerekmez)
-osascript -e "display notification \"Bugünün X brief'i hazır: $TODAY.md\" with title \"X Content Factory\" sound name \"Glass\""
+# (drafts/, pinned/ klasörleri zaten iCloud'a symlink — ekstra sync gerekmez)
+osascript -e "display notification \"Bugünün X brief'i hazır: $TODAY.md\" with title \"X Content Factory\" sound name \"Glass\"" 2>/dev/null || true

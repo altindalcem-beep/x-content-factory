@@ -63,7 +63,8 @@ if [ "$MODE" = "batch" ]; then
     fi
 fi
 
-# ---------- Prompt + Context oluştur ve Claude'a gönder ----------
+# ---------- Prompt + Context oluştur ----------
+PROMPT_INPUT=$(mktemp)
 {
     echo "# CONTEXT"
     echo ""
@@ -86,9 +87,28 @@ fi
     echo ""
     echo "# TASK"
     cat "$PROMPT_FILE"
-} | "$CLAUDE_BIN" -p > "$OUTPUT_FILE" 2>> "$LOG_FILE"
+} > "$PROMPT_INPUT"
 
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] Reply Radar tamam: $OUTPUT_FILE (mode: $MODE)" >> "$LOG_FILE"
+# ---------- Claude'a gönder — boş çıktıya karşı 3 deneme ----------
+ATTEMPTS=0
+MAX_ATTEMPTS=3
+while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+    ATTEMPTS=$((ATTEMPTS + 1))
+    "$CLAUDE_BIN" -p < "$PROMPT_INPUT" > "$OUTPUT_FILE" 2>> "$LOG_FILE" || true
+    [ -s "$OUTPUT_FILE" ] && break
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS boş çıktı verdi, 10 sn sonra tekrar" >> "$LOG_FILE"
+    sleep 10
+done
+rm -f "$PROMPT_INPUT"
+
+if [ ! -s "$OUTPUT_FILE" ]; then
+    rm -f "$OUTPUT_FILE"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de boş çıktı. Reply önerisi üretilemedi" >> "$LOG_FILE"
+    osascript -e "display notification \"REPLY RADAR boş döndü ($MODE) — claude hatası\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
+    exit 1
+fi
+
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] Reply Radar tamam: $OUTPUT_FILE (mode: $MODE, $ATTEMPTS. denemede)" >> "$LOG_FILE"
 
 # ---------- Manuel modda stdout'a da yazdır ----------
 if [ "$MODE" = "manual" ]; then

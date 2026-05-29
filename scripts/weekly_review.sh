@@ -52,7 +52,8 @@ if [ ${#PREV_REVIEW_FILES[@]} -gt 0 ]; then
     fi
 fi
 
-# ---------- Claude'a gönder ----------
+# ---------- Prompt'u tek dosyaya topla ----------
+PROMPT_INPUT=$(mktemp)
 {
     echo "# CONTEXT"
     echo ""
@@ -67,9 +68,34 @@ fi
     echo ""
     echo "# TASK"
     cat "$PROMPT_FILE"
-} | "$CLAUDE_BIN" -p > "$OUTPUT_FILE" 2>> "$LOG_FILE"
+} > "$PROMPT_INPUT"
 
-echo "[$(date +'%Y-%m-%d %H:%M:%S')] Weekly Review tamam: $OUTPUT_FILE" >> "$LOG_FILE"
+# ---------- Claude'a gönder — boş çıktıya karşı 3 deneme ----------
+TMP_OUT=$(mktemp)
+ATTEMPTS=0
+MAX_ATTEMPTS=3
+while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+    ATTEMPTS=$((ATTEMPTS + 1))
+    "$CLAUDE_BIN" -p < "$PROMPT_INPUT" > "$TMP_OUT" 2>> "$LOG_FILE" || true
+    [ -s "$TMP_OUT" ] && break
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS boş çıktı verdi, 10 sn sonra tekrar" >> "$LOG_FILE"
+    sleep 10
+done
+rm -f "$PROMPT_INPUT"
+
+if [ ! -s "$TMP_OUT" ]; then
+    rm -f "$TMP_OUT"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de boş çıktı. Weekly review üretilemedi" >> "$LOG_FILE"
+    osascript -e "display notification \"WEEKLY REVIEW ÜRETİLEMEDİ — claude boş döndü. Manuel: ./scripts/weekly_review.sh\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
+    exit 1
+fi
+
+# Önsöz temizliği: ilk '# ' (H1) satırından itibaren al
+awk 'f{print} /^# /{if(!f){f=1; print}}' "$TMP_OUT" > "$OUTPUT_FILE"
+[ -s "$OUTPUT_FILE" ] || cp "$TMP_OUT" "$OUTPUT_FILE"
+rm -f "$TMP_OUT"
+
+echo "[$(date +'%Y-%m-%d %H:%M:%S')] Weekly Review tamam: $OUTPUT_FILE ($ATTEMPTS. denemede)" >> "$LOG_FILE"
 
 # (drafts/ klasörü zaten iCloud'a symlink — ekstra sync gerekmez)
 osascript -e "display notification \"Hafta $WEEK_NUM review hazır — yarına input ayarlandı\" with title \"X Factory · Weekly Review\" sound name \"Glass\"" 2>/dev/null || true
