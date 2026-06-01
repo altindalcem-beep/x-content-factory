@@ -51,15 +51,20 @@ launchctl list | grep com.cemal.x
 
 ## Cihaz rolleri
 
-**PRIMARY (iMac, sabit, hep açık):**
+**PRIMARY (MacBook, priz takılı + lid açık):**
 - launchd 3 agent çalışır
 - Brief'leri üretir, iCloud'a yazar
+- **Önemli:** uyku KAPALI olmalı, yoksa 07:00 morning_brief tetiklenmez:
+  ```bash
+  sudo pmset -c sleep 0                              # AC priz: hiç uyuma
+  sudo pmset repeat wakeorpoweron MTWRFSU 06:55:00   # her gün 06:55'te uyandır (yedek)
+  ```
 
-**SECONDARY (MacBook, mobil):**
+**SECONDARY (iMac veya başka Mac):**
 - Kod aynı (git pull ile güncel)
-- launchd YOK (çakışmayı önlemek için)
+- launchd YÜKLEME (çakışmayı önlemek için) — yüklüyse `launchctl unload` + plist'leri sil
 - Manuel komut çalıştırılabilir: `./scripts/reply_radar.sh "@hesap" "metin"`
-- iCloud üzerinden iMac'in çıktısını görür
+- iCloud üzerinden MacBook'un çıktısını görür
 
 ## Klasör yapısı
 

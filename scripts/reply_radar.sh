@@ -89,22 +89,32 @@ PROMPT_INPUT=$(mktemp)
     cat "$PROMPT_FILE"
 } > "$PROMPT_INPUT"
 
-# ---------- Claude'a gönder — boş çıktıya karşı 3 deneme ----------
+# ---------- Claude'a gönder — boş VE hata-çıktısına karşı 3 deneme ----------
+# Reply radar çıktısı bazen H1 içermez (kısa öneri), o yüzden burada sadece API error kontrolü
+is_valid_output() {
+    local f="$1"
+    [ -s "$f" ] || return 1
+    grep -qE "^(API Error|Error:|Invalid API key)" "$f" && return 1
+    return 0
+}
+
 ATTEMPTS=0
 MAX_ATTEMPTS=3
 while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
     ATTEMPTS=$((ATTEMPTS + 1))
     "$CLAUDE_BIN" -p < "$PROMPT_INPUT" > "$OUTPUT_FILE" 2>> "$LOG_FILE" || true
-    [ -s "$OUTPUT_FILE" ] && break
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS boş çıktı verdi, 10 sn sonra tekrar" >> "$LOG_FILE"
-    sleep 10
+    if is_valid_output "$OUTPUT_FILE"; then break; fi
+    REASON="boş"; [ -s "$OUTPUT_FILE" ] && REASON="geçersiz ($(head -1 "$OUTPUT_FILE" | cut -c1-80))"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS $REASON, 15 sn sonra tekrar" >> "$LOG_FILE"
+    sleep 15
 done
 rm -f "$PROMPT_INPUT"
 
-if [ ! -s "$OUTPUT_FILE" ]; then
+if ! is_valid_output "$OUTPUT_FILE"; then
+    LAST_ERR=$(head -1 "$OUTPUT_FILE" 2>/dev/null | cut -c1-100)
     rm -f "$OUTPUT_FILE"
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de boş çıktı. Reply önerisi üretilemedi" >> "$LOG_FILE"
-    osascript -e "display notification \"REPLY RADAR boş döndü ($MODE) — claude hatası\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de geçersiz. Son: $LAST_ERR" >> "$LOG_FILE"
+    osascript -e "display notification \"REPLY RADAR HATASI ($MODE) — $LAST_ERR\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
     exit 1
 fi
 

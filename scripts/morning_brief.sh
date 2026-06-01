@@ -65,24 +65,36 @@ PROMPT_INPUT=$(mktemp)
   cat "$PROMPT_FILE"
 } > "$PROMPT_INPUT"
 
-# Brief üret — boş çıktıya karşı 3 deneme, mevcut iyi brief'i ASLA boşla ezme
+# Brief üret — boş VE hata-çıktısına karşı 3 deneme, mevcut iyi brief'i ASLA ezme
+# Geçerli çıktı koşulu: dosya boş değil + en az 1 markdown H1 (# ) satırı var + API Error içermiyor
+is_valid_output() {
+    local f="$1"
+    [ -s "$f" ] || return 1
+    grep -q "^# " "$f" || return 1
+    # claude bazen exit 0 dönüp stdout'a "API Error..." veya "Error:" yazıyor
+    grep -qE "^(API Error|Error:|Invalid API key)" "$f" && return 1
+    return 0
+}
+
 TMP_OUT=$(mktemp)
 ATTEMPTS=0
 MAX_ATTEMPTS=3
 while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
     ATTEMPTS=$((ATTEMPTS + 1))
     "$CLAUDE_BIN" -p --output-format text < "$PROMPT_INPUT" > "$TMP_OUT" 2>> "$LOG_FILE" || true
-    [ -s "$TMP_OUT" ] && break
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS boş çıktı verdi, 10 sn sonra tekrar" >> "$LOG_FILE"
-    sleep 10
+    if is_valid_output "$TMP_OUT"; then break; fi
+    REASON="boş"; [ -s "$TMP_OUT" ] && REASON="geçersiz ($(head -1 "$TMP_OUT" | cut -c1-80))"
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] Deneme $ATTEMPTS $REASON, 15 sn sonra tekrar" >> "$LOG_FILE"
+    sleep 15
 done
 rm -f "$PROMPT_INPUT"
 
-# 3 denemede de boşsa: mevcut dosyaya dokunma, hata bildir, çık
-if [ ! -s "$TMP_OUT" ]; then
+# 3 denemede de geçersizse: mevcut dosyaya dokunma, hata bildir, çık
+if ! is_valid_output "$TMP_OUT"; then
+    LAST_ERR=$(head -1 "$TMP_OUT" 2>/dev/null | cut -c1-100)
     rm -f "$TMP_OUT"
-    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de boş çıktı. Brief üretilemedi (claude usage limit / auth?)" >> "$LOG_FILE"
-    osascript -e "display notification \"BRIEF ÜRETİLEMEDİ — claude boş döndü. Manuel dene: ./scripts/morning_brief.sh\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] HATA: $MAX_ATTEMPTS denemede de geçersiz çıktı. Son: $LAST_ERR" >> "$LOG_FILE"
+    osascript -e "display notification \"BRIEF ÜRETİLEMEDİ — $LAST_ERR\" with title \"X Factory · HATA\" sound name \"Basso\"" 2>/dev/null || true
     exit 1
 fi
 
