@@ -11,16 +11,33 @@
 - **Maliyet:** ~2 kredi / görsel
 - **Preset:** 3D-stilize (kasıtlı **fotogerçekçi değil** → açıkça yapay, ifşa uyumlu)
 
-## Referans üretim (v1)
+## Referans üretim (v1) — SEÇİLEN: v1c ✅
 Kilit turunda 3 varyant üretildi (generation widget'ta görünür — hepsi aynı prompt/params):
 - v1a — job `a5a6720b-28f5-4fca-bbb3-cb6e9de2ea01`
 - v1b — job `251fdd51-e960-410d-9c57-901301c8f0e0`
-- v1c — job `a82a86fa-b362-421b-8690-7be2a5214df7`
+- **v1c — job `a82a86fa-b362-421b-8690-7be2a5214df7` ← VERA'nın SABİT YÜZÜ (kanonik)**
 
-> Görseller Higgsfield generation widget'ında görüntülenebilir/indirilebilir. (Repoya
-> binary olarak eklenmedi — proxy CDN'i engelledi; kilit zaten aşağıdaki prompt'tur.)
-> **Sonraki adım:** beğenilen varyantı seç → onu referans görsel olarak sabitleyip
-> (soul_2 + reference role, veya trained Soul) tüm gelecek üretimlerde besle.
+**Kanonik referans:** `a82a86fa-b362-421b-8690-7be2a5214df7` (v1c). Bundan sonraki
+tüm VERA görsellerinde bu, kimlik referansı olarak beslenir. Diğer varyantlar arşiv.
+
+### Bundan sonra her üretimde (tutarlılık reçetesi)
+Yeni poz/sahne/kıyafet üretirken karakteri sıfırdan tarif etme — **v1c'yi referans besle:**
+```
+generate_image(params: {
+  model: "soul_2",
+  medias: [{ value: "a82a86fa-b362-421b-8690-7be2a5214df7", role: "reference" }],
+  prompt: "<yeni sahne/poz> — same original stylized 3D AI character as reference,
+           identical face, hair (charcoal-navy with teal streak), outfit and palette",
+  aspect_ratio: "<sahneye göre>"
+})
+```
+- job_id doğrudan `medias[].value` olarak kullanılabilir (ayrı upload gerekmez).
+- Daha da sağlam tutarlılık istenirse: v1c'yi indirip **trained Soul** oluştur
+  (`show_characters(action:'train')`) → kalıcı `soul_id` ile her üretimde birebir yüz.
+- Her durumda **Sabit karakter özellikleri** (aşağıda) korunur; sadece istenen değişir.
+
+> Not: Görseller Higgsfield widget'ında görüntülenip indirilebilir; repoya binary olarak
+> eklenemedi (proxy CDN'i engelledi). Kilit = bu spec + v1c referans job_id'si.
 
 ## Sabit karakter özellikleri (asla değişmez)
 - **Tip:** stilize 3D dijital/AI karakter — açıkça gerçek insan değil
