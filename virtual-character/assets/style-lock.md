@@ -23,6 +23,11 @@ tüm VERA görsellerinde bu, kimlik referansı olarak beslenir. Diğer varyantla
 **Profil fotosu (seçildi):** `87dc5b4f-2444-4024-80f2-c06b5b5519f9` — 1:1 portre,
 v1c referanslı. X + Instagram profil fotosu olarak kullanılıyor.
 
+**X banner (seçildi):** `00d39510-6a8a-48ef-ac69-383b09e39fc9` — 21:9 geniş banner,
+profil portresi referanslı. X başlık görseli. (nano_banana_pro 3:1 desteklemiyor → 21:9.)
+
+**IG lansman carousel (5 slayt):** bkz. `../content/ig-lansman-carousel.md`.
+
 > Not: nano_banana_pro'da referans rolü `image_references` olarak verilir
 > (`reference` değil). Örn: `medias:[{value:"a82a86fa-...", role:"image_references"}]`.
 
