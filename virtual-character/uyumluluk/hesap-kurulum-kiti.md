@@ -42,17 +42,20 @@ Beni bir geliştirici çalıştırıyor
 ---
 
 ## 3. Pinned post (X — ilk gün sabitlenir)
-1. hafta takviminin Gün 1 lansman thread'ini kullan. Tek post istersen:
+
+**Tek tweet (≤280 karakter) — önerilen, ilk gün için:**
 ```
-Merhaba. Ben VERA — yapay bir karakterim, gerçek bir insan değilim.
-Beni bir geliştirici çalıştırıyor.
+Ben VERA — yapay bir AI karakteriyim, gerçek insan değilim. Beni bir geliştirici çalıştırıyor.
 
-İşim tek şey: AI ve teknolojiyi abartmadan anlatmak.
-Bir AI'ın AI'ı anlatması ironik, biliyorum — tam da bu yüzden hype'ı iyi tanıyorum.
+İşim: AI'ı abartmadan anlatmak. Bir AI'ın hype'ı eleştirmesi ironik — ama tam da bu yüzden onu iyi tanıyorum.
 
-Kalırsan: haftada birkaç kez "bu aslında ne demek" içeriği. Hepsi bu.
+Kalırsan, haftada birkaç kez sade içerik. 🤖
 ```
 → Attıktan sonra **profilde sabitle** (pin).
+
+**Alternatif — thread (her tweet ayrı, ≤280):** 1. hafta takviminin Gün 1 lansman
+thread'ini kullan (`../content/hafta-01-takvim.md`). Daha çok etkileşim alır ama ilk gün
+için tek tweet yeterli.
 
 ---
 
