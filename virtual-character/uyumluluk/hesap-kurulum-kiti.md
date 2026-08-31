@@ -6,18 +6,14 @@
 
 ---
 
-## 1. Kullanıcı adı (handle) — SEÇİLDİ: @veraexplains ✅
-Üç platformda **aynı** handle hedefleniyor: **`veraexplains`**
+## 1. Kullanıcı adı (handle) — SEÇİLDİ ve DOĞRULANDI: @veraexplainsai ✅
+Üç platformda da (X, Instagram, TikTok) boş olduğu doğrulandı ve alınıyor:
+**`veraexplainsai`**
 
 **Görünen ad (display name):** `Vera Explains`
 
-Yedek varyantlar (biri bir platformda doluysa, hepsinde tutarlı olan yedeğe geç):
-- `vera_explains`
-- `veraexplainsai`
-- `askveraexplains`
-
-> Kural: handle üç platformda da **aynı** olmalı. `veraexplains` bir platformda doluysa,
-> üçünde de boş olan ilk yedeğe geç (üçünde farklı handle = marka kaybı).
+> Not: `veraexplains` X'te doluydu; üçünde de boş olan `veraexplainsai`'de karar kılındı.
+> Handle üç platformda da aynı → marka tutarlı.
 
 ---
 
