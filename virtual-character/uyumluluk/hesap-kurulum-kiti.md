@@ -6,20 +6,18 @@
 
 ---
 
-## 1. Kullanıcı adı (handle) — öneriler
-Üç platformda **aynı** handle'ı almaya çalış (marka tutarlılığı + bulunabilirlik).
-Kısa, akılda kalıcı, "AI" sinyali taşıyan seçenekler:
+## 1. Kullanıcı adı (handle) — SEÇİLDİ: @veraexplains ✅
+Üç platformda **aynı** handle hedefleniyor: **`veraexplains`**
 
-- `veraexplains`  ← önerilen (ne yaptığını söyler)
-- `vera_ai`
-- `askvera_ai`
-- `vera_decodes`
-- `heyvera_ai`
+**Görünen ad (display name):** `Vera Explains`
 
-> Kontrol: seçmeden önce üç platformda da boş mu bak. Biri doluysa hepsinde tutarlı bir
-> varyanta geç (ör. hepsinde `veraexplains` yoksa hepsinde `vera_explains`).
+Yedek varyantlar (biri bir platformda doluysa, hepsinde tutarlı olan yedeğe geç):
+- `vera_explains`
+- `veraexplainsai`
+- `askveraexplains`
 
-**Görünen ad (display name):** `VERA` veya `VERA · AI explainer`
+> Kural: handle üç platformda da **aynı** olmalı. `veraexplains` bir platformda doluysa,
+> üçünde de boş olan ilk yedeğe geç (üçünde farklı handle = marka kaybı).
 
 ---
 
