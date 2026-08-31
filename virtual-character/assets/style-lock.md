@@ -20,6 +20,12 @@ Kilit turunda 3 varyant üretildi (generation widget'ta görünür — hepsi ayn
 **Kanonik referans:** `a82a86fa-b362-421b-8690-7be2a5214df7` (v1c). Bundan sonraki
 tüm VERA görsellerinde bu, kimlik referansı olarak beslenir. Diğer varyantlar arşiv.
 
+**Profil fotosu (seçildi):** `87dc5b4f-2444-4024-80f2-c06b5b5519f9` — 1:1 portre,
+v1c referanslı. X + Instagram profil fotosu olarak kullanılıyor.
+
+> Not: nano_banana_pro'da referans rolü `image_references` olarak verilir
+> (`reference` değil). Örn: `medias:[{value:"a82a86fa-...", role:"image_references"}]`.
+
 ### Bundan sonra her üretimde (tutarlılık reçetesi)
 Yeni poz/sahne/kıyafet üretirken karakteri sıfırdan tarif etme — **v1c'yi referans besle:**
 ```
