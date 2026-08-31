@@ -1,8 +1,13 @@
 # VERA — Hesap Kurulum Kiti (yayına hazır)
 
-> Üç platformda (X, Instagram, TikTok) hesabı açarken kopyala-yapıştır kullanacağın
-> her şey. Hepsi `disclosure.md` + `ifsa-checklist.md` ile uyumlu. Kredi gerektirmez.
-> **Kullanıcı adı ve avatar hariç** her şey hazır — onları sen seçeceksin.
+> Hesabı açarken kopyala-yapıştır kullanacağın her şey. Hepsi `disclosure.md` +
+> `ifsa-checklist.md` ile uyumlu. Kredi gerektirmez.
+>
+> **Aktif platformlar: X + Instagram.** TikTok şimdilik **iptal** edildi (video üretim
+> yükü nedeniyle). İleride eklenebilir; aşağıdaki TikTok bilgileri o gün için referans
+> olarak duruyor, bugün kullanılmıyor.
+>
+> **Durum:** X ✅ canlı (@veraexplainsai) · Instagram ✅ profil kuruldu · TikTok ⏸ iptal
 
 ---
 
