@@ -39,6 +39,9 @@ else
 fi
 
 # claude CLI yolu (PATH'te yoksa absolute path kullan)
+# Uzun ömürlü auth: .env varsa yükle (CLAUDE_CODE_OAUTH_TOKEN) — launchd OAuth süresi dolmasın diye. Üret: claude setup-token
+if [ -f "$FACTORY_DIR/.env" ]; then set -a; . "$FACTORY_DIR/.env"; set +a; fi
+
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
 # Prompt'u tek dosyaya topla (retry için tekrar tekrar okunacak)

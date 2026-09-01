@@ -24,6 +24,9 @@ INBOX_FILE="$FACTORY_DIR/config/reply-inbox.md"
 PROMPT_FILE="$FACTORY_DIR/prompts/reply_radar.md"
 OUTPUT_FILE="$FACTORY_DIR/drafts/replies-$TODAY-$HHMM.md"
 
+# Uzun ömürlü auth: .env varsa yükle (CLAUDE_CODE_OAUTH_TOKEN) — launchd OAuth süresi dolmasın diye. Üret: claude setup-token
+if [ -f "$FACTORY_DIR/.env" ]; then set -a; . "$FACTORY_DIR/.env"; set +a; fi
+
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
 # ---------- Argüman parsing ----------
