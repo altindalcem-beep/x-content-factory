@@ -25,8 +25,14 @@ süperlatif yok, stok motivasyon yok. Ana içeriğe link koyma.
 {tek cümle: bugünün içeriğinin çekirdek fikri}
 
 ## X (birincil)
-{tam post metni VEYA thread ise numaralı tweet iskeleti — her tweet tek fikir}
-*({karakter sayısı}/280 — tek post ise)*
+**280 KARAKTER KURALI (zorunlu):** Tek tweet ≤280 karakter. İçerik 280'i aşıyorsa
+otomatik olarak **hazır bir thread'e böl** — her parça ayrı, `1/`, `2/`, `3/` diye
+numaralı, her biri ≤280 karakter, akıcı (hook + ilk fikirler 1/'de, kalan + kapanış
+sonda). Cem'in elle bölmesi gerekmesin; doğrudan yayına hazır parçalar ver. Karakter
+sayısını her parçanın altına yaz. 280 altındaysa tek post yeter.
+
+{tek post ise tam metin; uzunsa 1/ 2/ ... numaralı, her biri ≤280 tweet dizisi}
+*(her tweet için: {karakter sayısı}/280)*
 **Hedef sinyal:** {bookmark / reply / repost}
 **Niye bu post:** {1 cümle}
 
