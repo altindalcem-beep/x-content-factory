@@ -26,6 +26,10 @@ OUTPUT_FILE="$VERA_DRAFT_DIR/weekreview-$YEAR-W$WEEK_NUM.md"
 
 BRAND_DIR="$FACTORY_DIR/virtual-character/brand"
 
+# Uzun ömürlü auth: .env varsa yükle (CLAUDE_CODE_OAUTH_TOKEN)
+# launchd arka planda çalışırken OAuth oturumu süresi dolmasın diye. Üret: claude setup-token
+if [ -f "$FACTORY_DIR/.env" ]; then set -a; . "$FACTORY_DIR/.env"; set +a; fi
+
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
 mkdir -p "$VERA_DRAFT_DIR" "$FACTORY_DIR/logs"

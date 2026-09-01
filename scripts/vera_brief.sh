@@ -41,6 +41,11 @@ else
     LAST_WEEKREVIEW="(henüz weekly review yok — ilk hafta)"
 fi
 
+# Uzun ömürlü auth: .env varsa yükle (CLAUDE_CODE_OAUTH_TOKEN)
+# Böylece launchd arka planda çalışırken OAuth oturumu süresi dolmaz.
+# .env gitignore'da — token repoya gitmez. Üretmek için: claude setup-token
+if [ -f "$FACTORY_DIR/.env" ]; then set -a; . "$FACTORY_DIR/.env"; set +a; fi
+
 # claude CLI yolu (PATH'te yoksa absolute path kullan)
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
