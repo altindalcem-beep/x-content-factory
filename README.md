@@ -7,6 +7,7 @@ AI üretir, manuel post atılır. Cem sadece X üzerinde çalışır — hiçbir
 
 | Motor | Tetikleyici | İşi |
 |---|---|---|
+| `shorts_factory.sh` | 06:30 hergün | Bugün çekilecek TEK YouTube Short'un tam prodüksiyon dosyası (hook + beat-beat script + on-screen metin + başlık + açıklama + CTA) |
 | `morning_brief.sh` | 07:00 hergün | Günün 3 post brief'i + 10 balina için reply DNA şablonu |
 | `reply_radar.sh` | 12:00 + 17:00 / manuel | `config/reply-inbox.md`'ye yapıştırılan balina postlarına reply önerisi (telefon workflow) |
 | `weekly_review.sh` | Pazar 21:00 | Son 7 brief'in arc analizi + doygunluk uyarıları + gelecek hafta açı önerileri |
@@ -71,21 +72,25 @@ launchctl list | grep com.cemal.x
 ```
 x-content-factory/
 ├── scripts/                      # ← repo
+│   ├── shorts_factory.sh
 │   ├── morning_brief.sh
 │   ├── reply_radar.sh
 │   └── weekly_review.sh
 ├── prompts/                      # ← repo
+│   ├── shorts_brief.md
 │   ├── morning_brief.md
 │   ├── reply_radar.md
 │   └── weekly_review.md
 ├── config/
 │   ├── nis-baglam.md            # ← repo (private)
+│   ├── shorts-baglam.md         # ← repo (Shorts strateji + para modeli)
 │   ├── balina-listesi.txt       # ← repo
 │   └── reply-inbox.md           # ← gitignore (lokal, telefon workflow için)
 ├── launchd-templates/            # ← repo
 │   └── *.plist.template
 ├── drafts/                       # ← gitignore (iCloud'a symlink)
-│   ├── YYYY-MM-DD.md            # günlük brief'ler
+│   ├── shorts-YYYY-MM-DD.md     # günlük Shorts prodüksiyon dosyası
+│   ├── YYYY-MM-DD.md            # günlük X brief'leri
 │   ├── replies-YYYY-MM-DD-HHMM.md   # reply_radar çıktıları
 │   └── weekreview-YYYY-Wnn.md   # haftalık review
 ├── pinned/                       # ← gitignore (iCloud'a symlink)
@@ -96,8 +101,20 @@ x-content-factory/
 └── README.md                     # ← repo
 ```
 
+## YouTube Shorts motoru
+
+`shorts_factory.sh` her sabah 06:30'da bir sonraki Short'un tam prodüksiyon dosyasını üretir → `drafts/shorts-YYYY-MM-DD.md`. Cem brief'i açar, düşünmeden kaydeder + keser + yükler (~1 saat).
+
+**Para modeli (net):** Shorts AdSense 1. gün hedefi değil. YPP eşiği (1000 abone + 90 günde 10M Shorts izlenme) ve AdSense hesabı gelmeden reklam geliri $0, Shorts RPM zaten düşük. Bu motor Shorts'u **huninin tepesi** olarak kullanır: Değer Merdiveni → Ücretsiz Short → topluluk/e-mail → Workshop → Danışmanlık. Birincil KPI izlenme değil retention + kaydetme + pinned tıklama. Detay: `config/shorts-baglam.md`.
+
+**Format:** varsayılan faceless build-in-public (ekran kaydı: Claude Code / n8n / cron + on-screen metin). Konuşan-kafa opsiyonel.
+
+**Cem'in vereceği 2 karar** (`config/shorts-baglam.md` sonunda): format tercihi + huni ucundaki somut teklif. CTA buna bağlanır.
+
 ## Günlük kullanım
 
+**Sabah 06:30** — bildirim gelir, Obsidian'da `shorts-{tarih}.md` brief'i aç
+**Gün içi ~1 saat** — Short'u kaydet + kes + YouTube'a yükle, CTA'yı açıklama/pinned yoruma koy
 **Sabah 07:00** — bildirim gelir, Obsidian'da brief'i aç
 **09:00** — Post 1'i at
 **13:00** — Post 2'yi at
