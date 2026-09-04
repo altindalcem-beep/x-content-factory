@@ -84,6 +84,7 @@ x-content-factory/
 ├── config/
 │   ├── nis-baglam.md            # ← repo (private)
 │   ├── shorts-baglam.md         # ← repo (Shorts strateji + para modeli)
+│   ├── shorts-swipe.md          # ← repo (kanıtlanmış kalıp arşivi)
 │   ├── balina-listesi.txt       # ← repo
 │   └── reply-inbox.md           # ← gitignore (lokal, telefon workflow için)
 ├── launchd-templates/            # ← repo
@@ -107,9 +108,11 @@ x-content-factory/
 
 **Para modeli (net):** Shorts AdSense 1. gün hedefi değil. YPP eşiği (1000 abone + 90 günde 10M Shorts izlenme) ve AdSense hesabı gelmeden reklam geliri $0, Shorts RPM zaten düşük. Bu motor Shorts'u **huninin tepesi** olarak kullanır: Değer Merdiveni → Ücretsiz Short → topluluk/e-mail → Workshop → Danışmanlık. Birincil KPI izlenme değil retention + kaydetme + pinned tıklama. Detay: `config/shorts-baglam.md`.
 
-**Format:** varsayılan faceless build-in-public (ekran kaydı: Claude Code / n8n / cron + on-screen metin). Konuşan-kafa opsiyonel.
+**Format:** faceless build-in-public, kilitli (ekran kaydı: Claude Code / n8n / cron + on-screen metin). Yüz yok, konuşan-kafa yok.
 
-**Cem'in vereceği 2 karar** (`config/shorts-baglam.md` sonunda): format tercihi + huni ucundaki somut teklif. CTA buna bağlanır.
+**Swipe file:** `config/shorts-swipe.md` kanıtlanmış kalıp arşivi. Patlayan Short linkini yapıştırırsın, motor hook + yapı + neden-işledi analizini çıkarır. Motor günlük brief'i bu kalıplardan besler. **Kalıp transfer edilir, görüntü/ses/cümle ASLA kopyalanmaz** — kopya reused-content cezası + telif riski, kalıp yasal.
+
+**Açık tek karar** (`config/shorts-baglam.md` sonunda): huni ucundaki somut teklif. CTA buna bağlanır.
 
 ## Günlük kullanım
 

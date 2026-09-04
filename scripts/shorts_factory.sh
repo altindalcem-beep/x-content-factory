@@ -18,6 +18,7 @@ DRAFT_FILE="$FACTORY_DIR/drafts/shorts-$TODAY.md"
 PROMPT_FILE="$FACTORY_DIR/prompts/shorts_brief.md"
 NIS_BAGLAM="$FACTORY_DIR/config/nis-baglam.md"
 SHORTS_BAGLAM="$FACTORY_DIR/config/shorts-baglam.md"
+SHORTS_SWIPE="$FACTORY_DIR/config/shorts-swipe.md"
 
 # Son 7 günün Shorts brief'lerini oku (tekrar etmemek için)
 # Sadece shorts-YYYY-MM-DD.md dosyaları
@@ -44,6 +45,13 @@ PROMPT_INPUT=$(mktemp)
   echo ""
   echo "## Shorts bağlamı (para modeli + format + yapı)"
   cat "$SHORTS_BAGLAM"
+  echo ""
+  echo "## Swipe file (kanıtlanmış kalıp arşivi — KALIP transfer et, ASLA kopyalama)"
+  if [ -f "$SHORTS_SWIPE" ]; then
+    cat "$SHORTS_SWIPE"
+  else
+    echo "(swipe file yok — niş bilgisinden kalıp türet, Cem'e link yapıştırmasını hatırlat)"
+  fi
   echo ""
   echo "## Son 7 günde ürettiğim Shorts brief'leri (tekrar etmemek için referans)"
   echo "$RECENT_SHORTS"

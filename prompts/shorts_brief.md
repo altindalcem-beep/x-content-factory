@@ -9,6 +9,8 @@ Amaç: Cem brief'i açar, düşünmeden kaydeder + keser + yükler (~1 saat). Fi
 ## Bugünün Short'u — tek fikir
 {1 cümle: bugün ne anlatıyoruz, kime, neden bugün}
 
+**Kullanılan swipe kalıbı:** {swipe file'daki hangi kalıptan beslendin — etiket + ne aldın. Swipe boşsa: "niş kalıbı" yaz ve Cem'e link yapıştırmasını hatırlat}
+
 **Format:** {faceless ekran kaydı / konuşan-kafa — varsayılan faceless}
 **Tahmini süre:** {25-35 sn hedef}
 **Birincil sinyal:** {retention / kaydetme / pinned tıklama}
@@ -73,5 +75,11 @@ Her beat için: [saniye aralığı] + KONUŞMA/ALTYAZI + EKRAN (ne kaydediliyor)
 9. **Link kuralı.** Video içinde "linke tıkla" bağırma yok. Link açıklama ilk satırı ya da pinned yorum.
 
 10. **Dil.** Nişle tutarlı: çoğu TR, ara sıra EN. Son 7 güne bakıp bugün hangisi karar ver.
+
+11. **Swipe = kalıp, kopya DEĞİL (telif duvarı).** Swipe file'dan sadece hook tipi / yapı / tempo / konu açısı transfer edilir. Başka bir yaratıcının spesifik cümlesi, görüntüsü, sesi, müziği ASLA yeniden üretilmez. Ürettiğin her brief, Cem'in KENDİ ekran kaydıyla (Claude Code / n8n / terminal / gerçek çıktı) sıfırdan çekilebilir olmalı. Başkasının klibini yeniden yükletecek hiçbir yönerge verme. Bu ihlal edilirse reused-content cezası + telif riski doğar.
+
+12. **Faceless zorunlu.** Cem yüz göstermiyor. Tüm script ekran kaydı + on-screen metin + (opsiyonel) voiceover ile çekilebilir olmalı. "Kameraya bak", "yüzünü göster" tarzı yönerge YASAK.
+
+13. **Kalıp rotasyonu.** Swipe'da birden fazla kategori varsa, son 7 günde az kullanılan kalıp kategorisini seç. Tek formata saplanma.
 
 Brief'i şimdi üret.

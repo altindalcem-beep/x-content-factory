@@ -17,13 +17,13 @@ Her Short'un işi: izleyiciyi Cem'in AI otomasyon teklifine bir adım yaklaştı
 
 **Bu yüzden birincil KPI:** retention (ilk 3 sn tutma) + kaydetme/paylaşma + açıklama/pinned yorum tıklaması. İzlenme ikincil, RPM üçüncül.
 
-## Format kararı: Faceless build-in-public (varsayılan)
+## Format kararı: Faceless build-in-public (KİLİTLİ)
 
-Cem'in nişi zaten "pipeline'ı göster" dürüstlüğü. En düşük sürtünme:
+Cem yüz göstermiyor. Karar verildi, bütün Shorts faceless. En düşük sürtünme:
 - Ekran kaydı: Claude Code terminali, n8n canvas, cron/launchd, gerçek çıktı
 - Üstüne büyük on-screen metin (hook + adımlar)
 - Opsiyonel voiceover ya da sessiz + altyazı
-- Yüz göstermek zorunlu değil. Konuşan-kafa isteğe bağlı, ayrı karar.
+- Konuşan-kafa YOK. Her script ekran + metin + (opsiyonel) ses ile çekilebilmeli.
 
 Bu format 1 saat/gün'e sığar: script hazır → 5-10 dk ekran kaydı → 20-30 dk kes/altyazı → yükle.
 
@@ -60,7 +60,8 @@ Thumbnail/başlıkta clickbait rakam = kanal güvenilirliği biter.
 - Faz 2 (Hacim): en iyi 3 formatı tekrarla, seri yap (ör. "Claude Code 30 saniyede X").
 - Faz 3 (Monetize): YPP eşiğine yaklaşınca AdSense kur; asıl para huniden (workshop/danışmanlık).
 
-## Cem'in vereceği 2 karar (varsayım yapma, sor gerekirse)
+## Açık kalan tek karar (varsayım yapma)
 
-1. Format: faceless (varsayılan) mı, konuşan-kafa mı, karışık mı?
-2. Huni ucu: şu an satılan somut teklif ne (workshop tarihi / danışmanlık / ücretsiz topluluk)? CTA buna bağlanır. Yoksa CTA = e-mail/topluluk toplama.
+- Huni ucu: şu an satılan somut teklif ne (workshop tarihi / danışmanlık / ücretsiz topluluk)? CTA buna bağlanır. Belli değilse CTA = e-mail/topluluk toplama (varsayılan).
+
+Format kararı verildi: faceless (yukarıda kilitli). Swipe file kalıp arşivi: `config/shorts-swipe.md`.
