@@ -24,6 +24,9 @@ NIS_BAGLAM="$FACTORY_DIR/config/nis-baglam.md"
 PROMPT_FILE="$FACTORY_DIR/prompts/weekly_review.md"
 OUTPUT_FILE="$FACTORY_DIR/drafts/weekreview-$YEAR-W$WEEK_NUM.md"
 
+# Uzun ömürlü auth: .env varsa yükle (CLAUDE_CODE_OAUTH_TOKEN) — launchd OAuth süresi dolmasın diye. Üret: claude setup-token
+if [ -f "$FACTORY_DIR/.env" ]; then set -a; . "$FACTORY_DIR/.env"; set +a; fi
+
 CLAUDE_BIN=$(command -v claude || echo "$HOME/.local/bin/claude")
 
 mkdir -p "$FACTORY_DIR/logs"
