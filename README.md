@@ -84,7 +84,8 @@ x-content-factory/
 │   ├── templates/                # markalı kompozisyon varyantları (script rastgele seçer)
 │   │   ├── hook.tmpl             # sol-ray + madde listesi
 │   │   ├── quote.tmpl            # tırnak + editoryal
-│   │   └── stat.tmpl             # numaralı 01/02/03 liste
+│   │   ├── stat.tmpl             # numaralı 01/02/03 liste
+│   │   └── weights.conf          # seçim ağırlıkları (hook=50, quote=25, stat=25)
 │   ├── inject.mjs                # kopyayı template'e HTML-escape'li enjekte eder
 │   ├── assets/gsap.min.js        # lokal vendor (render-anı network yok)
 │   ├── hyperframes.json          # proje config
@@ -142,7 +143,7 @@ Metin fabrikasına ek: bir hook'u markalı dikey X video kartına çevirir (1080
 [Hyperframes](https://github.com/heygen-com/hyperframes) (Apache 2.0) ile lokal render. API key yok, per-render ücret yok.
 
 **Nasıl çalışır:**
-1. Script `templates/` içinden bir varyant RASTGELE seçer (hook / quote / stat). Üçü de aynı alanları kullanır.
+1. Script `templates/` içinden bir varyant AĞIRLIKLI rastgele seçer (`weights.conf`: hook %50, quote %25, stat %25). Üçü de aynı alanları kullanır.
 2. Claude sadece KISA kopya üretir (hook, 3 madde, CTA, caption) — `prompts/video_factory.md` kontratı.
 3. `inject.mjs` bu kopyayı seçilen template'e HTML-escape'li enjekte eder → `video/index.html`.
 4. `hyperframes lint` doğrular (geçmezse üretimi tekrarlar, bozuk video çıkmaz).
@@ -151,7 +152,7 @@ Metin fabrikasına ek: bir hook'u markalı dikey X video kartına çevirir (1080
 Claude HTML yazmaz, layout/animasyon template'te sabit. Bu yüzden her render lint-geçerli, marka kimliği tutarlı. Çeşitlilik hem kopyadan hem 3 varyanttan gelir.
 
 Test için varyantı sabitle: `HF_TEMPLATE=quote ./scripts/video_factory.sh "hook"` (hook / quote / stat).
-Yeni varyant eklemek: `video/templates/` içine `*.tmpl` koy, aynı `{{HOOK}} {{BEAT1..3}} {{CTA}} {{HANDLE}}` alanlarını kullan. Script otomatik havuza alır.
+Yeni varyant eklemek: `video/templates/` içine `*.tmpl` koy, aynı `{{HOOK}} {{BEAT1..3}} {{CTA}} {{HANDLE}}` alanlarını kullan. Script otomatik havuza alır (ağırlık vermezsen `weights.conf` varsayılanı 25). Ağırlık ayarı: `weights.conf`'a `name=weight` satırı ekle.
 
 **Kullanım:**
 ```bash

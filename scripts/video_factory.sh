@@ -42,14 +42,34 @@ notify() { osascript -e "display notification \"$1\" with title \"X Factory · V
 command -v node >/dev/null || { log "HATA: node yok"; notify "node bulunamadı" "Basso"; exit 1; }
 command -v ffmpeg >/dev/null || { log "HATA: ffmpeg yok — brew install ffmpeg"; notify "ffmpeg yok — brew install ffmpeg" "Basso"; exit 1; }
 
-# Template varyantları — rastgele seç (HF_TEMPLATE=quote ile sabitlenebilir, test için)
+# Template varyantları — AĞIRLIKLI rastgele seç (HF_TEMPLATE=quote ile sabitlenebilir, test için)
+# Ağırlıklar: templates/weights.conf (name=weight). Listede olmayan template DEFAULT_WEIGHT alır.
 TEMPLATES=("$TEMPLATE_DIR"/*.tmpl)
 [ ${#TEMPLATES[@]} -gt 0 ] || { log "HATA: templates/ boş: $TEMPLATE_DIR"; notify "Template yok" "Basso"; exit 1; }
+WEIGHTS_FILE="$TEMPLATE_DIR/weights.conf"
+DEFAULT_WEIGHT=25
+
+tmpl_weight() {   # bir template adının ağırlığını yaz (config'te yoksa DEFAULT_WEIGHT)
+    local name="$1" w=""
+    [ -f "$WEIGHTS_FILE" ] && w=$(grep -m1 -E "^${name}=" "$WEIGHTS_FILE" 2>/dev/null | sed -E "s/^${name}=//" | tr -dc '0-9')
+    [ -n "$w" ] && echo "$w" || echo "$DEFAULT_WEIGHT"
+}
+
 if [ "${HF_TEMPLATE:-}" != "" ] && [ -f "$TEMPLATE_DIR/${HF_TEMPLATE}.tmpl" ]; then
     TEMPLATE="$TEMPLATE_DIR/${HF_TEMPLATE}.tmpl"
 else
-    IDX=$(( (RANDOM % ${#TEMPLATES[@]}) + 1 ))   # zsh dizileri 1-indexli
-    TEMPLATE="${TEMPLATES[$IDX]}"
+    TOTAL=0
+    for t in "${TEMPLATES[@]}"; do
+        TOTAL=$((TOTAL + $(tmpl_weight "$(basename "$t" .tmpl)")))
+    done
+    [ "$TOTAL" -gt 0 ] || TOTAL=1
+    R=$((RANDOM % TOTAL))
+    ACC=0
+    TEMPLATE="${TEMPLATES[1]}"   # fallback (zsh 1-indexli)
+    for t in "${TEMPLATES[@]}"; do
+        ACC=$((ACC + $(tmpl_weight "$(basename "$t" .tmpl)")))
+        if [ "$R" -lt "$ACC" ]; then TEMPLATE="$t"; break; fi
+    done
 fi
 TEMPLATE_NAME=$(basename "$TEMPLATE" .tmpl)
 log "Template seçildi: $TEMPLATE_NAME"
