@@ -18,7 +18,7 @@ setopt null_glob 2>/dev/null || true
 
 FACTORY_DIR="$HOME/x-content-factory"
 VIDEO_DIR="$FACTORY_DIR/video"
-TEMPLATE="$VIDEO_DIR/composition.tmpl"
+TEMPLATE_DIR="$VIDEO_DIR/templates"
 COMPOSITION="$VIDEO_DIR/index.html"
 INJECTOR="$VIDEO_DIR/inject.mjs"
 PROMPT_FILE="$FACTORY_DIR/prompts/video_factory.md"
@@ -41,7 +41,18 @@ notify() { osascript -e "display notification \"$1\" with title \"X Factory · V
 # ---------- 0. Ön kontrol ----------
 command -v node >/dev/null || { log "HATA: node yok"; notify "node bulunamadı" "Basso"; exit 1; }
 command -v ffmpeg >/dev/null || { log "HATA: ffmpeg yok — brew install ffmpeg"; notify "ffmpeg yok — brew install ffmpeg" "Basso"; exit 1; }
-[ -f "$TEMPLATE" ] || { log "HATA: template yok: $TEMPLATE"; exit 1; }
+
+# Template varyantları — rastgele seç (HF_TEMPLATE=quote ile sabitlenebilir, test için)
+TEMPLATES=("$TEMPLATE_DIR"/*.tmpl)
+[ ${#TEMPLATES[@]} -gt 0 ] || { log "HATA: templates/ boş: $TEMPLATE_DIR"; notify "Template yok" "Basso"; exit 1; }
+if [ "${HF_TEMPLATE:-}" != "" ] && [ -f "$TEMPLATE_DIR/${HF_TEMPLATE}.tmpl" ]; then
+    TEMPLATE="$TEMPLATE_DIR/${HF_TEMPLATE}.tmpl"
+else
+    IDX=$(( (RANDOM % ${#TEMPLATES[@]}) + 1 ))   # zsh dizileri 1-indexli
+    TEMPLATE="${TEMPLATES[$IDX]}"
+fi
+TEMPLATE_NAME=$(basename "$TEMPLATE" .tmpl)
+log "Template seçildi: $TEMPLATE_NAME"
 
 # ---------- 1. Kaynak hook'u belirle ----------
 if [ "${1:-}" != "" ]; then
@@ -160,6 +171,7 @@ cp "$LATEST_MP4" "$OUT_MP4"
   echo "---"
   echo ""
   echo "## Kartta kullanılan"
+  echo "- Template: $TEMPLATE_NAME"
   echo "- HOOK: $HF_HOOK"
   echo "- BEAT1: $HF_BEAT1"
   echo "- BEAT2: $HF_BEAT2"

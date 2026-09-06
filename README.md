@@ -81,7 +81,10 @@ x-content-factory/
 │   ├── weekly_review.md
 │   └── video_factory.md
 ├── video/                        # ← repo (Hyperframes video motoru)
-│   ├── composition.tmpl          # markalı kompozisyon template'i (placeholder'lı)
+│   ├── templates/                # markalı kompozisyon varyantları (script rastgele seçer)
+│   │   ├── hook.tmpl             # sol-ray + madde listesi
+│   │   ├── quote.tmpl            # tırnak + editoryal
+│   │   └── stat.tmpl             # numaralı 01/02/03 liste
 │   ├── inject.mjs                # kopyayı template'e HTML-escape'li enjekte eder
 │   ├── assets/gsap.min.js        # lokal vendor (render-anı network yok)
 │   ├── hyperframes.json          # proje config
@@ -139,12 +142,16 @@ Metin fabrikasına ek: bir hook'u markalı dikey X video kartına çevirir (1080
 [Hyperframes](https://github.com/heygen-com/hyperframes) (Apache 2.0) ile lokal render. API key yok, per-render ücret yok.
 
 **Nasıl çalışır:**
-1. Claude sadece KISA kopya üretir (hook, 3 madde, CTA, caption) — `prompts/video_factory.md` kontratı.
-2. `inject.mjs` bu kopyayı `composition.tmpl`'e HTML-escape'li enjekte eder → `video/index.html`.
-3. `hyperframes lint` doğrular (geçmezse üretimi tekrarlar, bozuk video çıkmaz).
-4. `hyperframes render` → MP4. `drafts/`'a kopyalanır + caption sidecar `.md` yazılır.
+1. Script `templates/` içinden bir varyant RASTGELE seçer (hook / quote / stat). Üçü de aynı alanları kullanır.
+2. Claude sadece KISA kopya üretir (hook, 3 madde, CTA, caption) — `prompts/video_factory.md` kontratı.
+3. `inject.mjs` bu kopyayı seçilen template'e HTML-escape'li enjekte eder → `video/index.html`.
+4. `hyperframes lint` doğrular (geçmezse üretimi tekrarlar, bozuk video çıkmaz).
+5. `hyperframes render` → MP4. `drafts/`'a kopyalanır + caption sidecar `.md` yazılır (hangi template kullanıldığı da yazar).
 
-Animasyon ve layout SABİT (template). Claude HTML yazmaz. Bu yüzden her render lint-geçerli, marka kimliği tutarlı. Görsel çeşitlilik kopyadan gelir.
+Claude HTML yazmaz, layout/animasyon template'te sabit. Bu yüzden her render lint-geçerli, marka kimliği tutarlı. Çeşitlilik hem kopyadan hem 3 varyanttan gelir.
+
+Test için varyantı sabitle: `HF_TEMPLATE=quote ./scripts/video_factory.sh "hook"` (hook / quote / stat).
+Yeni varyant eklemek: `video/templates/` içine `*.tmpl` koy, aynı `{{HOOK}} {{BEAT1..3}} {{CTA}} {{HANDLE}}` alanlarını kullan. Script otomatik havuza alır.
 
 **Kullanım:**
 ```bash

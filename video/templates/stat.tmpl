@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <!-- GSAP lokal vendor. Font <link> KOYMA. Fontları Hyperframes çeker. -->
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1350px; overflow: hidden; background: #0D1F2D; }
+      body { font-family: "Lato", sans-serif; color: #F4F1EC; }
+      #root { position: relative; width: 1080px; height: 1350px; }
+
+      #topbar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 16px;
+        background: #D6654F;
+        transform-origin: left center;
+      }
+
+      #hook {
+        position: absolute;
+        left: 100px;
+        right: 90px;
+        top: 150px;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 90px;
+        line-height: 1.05;
+        color: #F4F1EC;
+      }
+
+      .row {
+        position: absolute;
+        left: 100px;
+        right: 90px;
+        height: 120px;
+      }
+      .num {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 72px;
+        line-height: 1;
+        color: #3ABFA7;
+      }
+      .rowtext {
+        position: absolute;
+        left: 130px;
+        right: 0;
+        top: 10px;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1.25;
+        color: #E8ECEF;
+      }
+      #row-1 { top: 560px; }
+      #row-2 { top: 700px; }
+      #row-3 { top: 840px; }
+
+      #cta {
+        position: absolute;
+        left: 100px;
+        top: 1040px;
+        padding: 26px 48px;
+        background: #3ABFA7;
+        color: #0D1F2D;
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 46px;
+        border-radius: 16px;
+      }
+      #handle {
+        position: absolute;
+        left: 100px;
+        top: 1210px;
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #D6654F;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1080" data-height="1350">
+      <div id="topbar" class="clip" data-start="0" data-duration="11" data-track-index="0"></div>
+
+      <div id="hook" class="clip" data-start="0" data-duration="11" data-track-index="1">{{HOOK}}</div>
+
+      <div id="row-1" class="clip row" data-start="2" data-duration="9" data-track-index="2">
+        <div class="num">01</div><div class="rowtext">{{BEAT1}}</div>
+      </div>
+      <div id="row-2" class="clip row" data-start="2" data-duration="9" data-track-index="2">
+        <div class="num">02</div><div class="rowtext">{{BEAT2}}</div>
+      </div>
+      <div id="row-3" class="clip row" data-start="2" data-duration="9" data-track-index="2">
+        <div class="num">03</div><div class="rowtext">{{BEAT3}}</div>
+      </div>
+
+      <div id="cta" class="clip" data-start="7" data-duration="4" data-track-index="3">{{CTA}}</div>
+      <div id="handle" class="clip" data-start="7" data-duration="4" data-track-index="3">{{HANDLE}}</div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#topbar", { scaleX: 0, duration: 0.7, ease: "power3.out" }, 0);
+      tl.from("#hook", { opacity: 0, x: -40, duration: 0.9, ease: "power3.out" }, 0.3);
+      tl.from("#row-1", { opacity: 0, x: 30, duration: 0.55, ease: "back.out(1.4)" }, 2.0);
+      tl.from("#row-2", { opacity: 0, x: 30, duration: 0.55, ease: "back.out(1.4)" }, 2.35);
+      tl.from("#row-3", { opacity: 0, x: 30, duration: 0.55, ease: "back.out(1.4)" }, 2.7);
+      tl.from("#cta", { opacity: 0, scale: 0.85, duration: 0.6, ease: "back.out(1.6)", transformOrigin: "left center" }, 7.0);
+      tl.from("#handle", { opacity: 0, duration: 0.6, ease: "power1.out" }, 7.4);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

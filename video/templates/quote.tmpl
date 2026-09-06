@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <!-- GSAP lokal vendor. Font <link> KOYMA (render'ı network'e bağlar). Fontları Hyperframes çeker. -->
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1350px; overflow: hidden; background: #0D1F2D; }
+      body { font-family: "Lato", sans-serif; color: #F4F1EC; }
+      #root { position: relative; width: 1080px; height: 1350px; }
+
+      #qmark {
+        position: absolute;
+        left: 70px;
+        top: 90px;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 340px;
+        line-height: 1;
+        color: #D6654F;
+        opacity: 0.35;
+      }
+
+      #hook {
+        position: absolute;
+        left: 120px;
+        right: 100px;
+        top: 340px;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 100px;
+        line-height: 1.04;
+        color: #F4F1EC;
+      }
+
+      #divider {
+        position: absolute;
+        left: 122px;
+        top: 700px;
+        width: 220px;
+        height: 8px;
+        background: #3ABFA7;
+        transform-origin: left center;
+      }
+
+      .beat {
+        position: absolute;
+        left: 122px;
+        right: 100px;
+        font-size: 38px;
+        font-weight: 400;
+        line-height: 1.3;
+        color: #CBD5DC;
+        padding-left: 40px;
+      }
+      .beat::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 20px;
+        width: 22px;
+        height: 4px;
+        background: #3ABFA7;
+      }
+      #beat-1 { top: 760px; }
+      #beat-2 { top: 850px; }
+      #beat-3 { top: 940px; }
+
+      #cta {
+        position: absolute;
+        left: 122px;
+        right: 100px;
+        top: 1080px;
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 50px;
+        color: #3ABFA7;
+      }
+      #handle {
+        position: absolute;
+        left: 122px;
+        top: 1210px;
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #D6654F;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="11" data-width="1080" data-height="1350">
+      <div id="qmark" class="clip" data-start="0" data-duration="11" data-track-index="0" data-layout-allow-overflow>&#8220;</div>
+
+      <div id="hook" class="clip" data-start="0" data-duration="11" data-track-index="1">{{HOOK}}</div>
+      <div id="divider" class="clip" data-start="0" data-duration="11" data-track-index="2"></div>
+
+      <div id="beat-1" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT1}}</div>
+      <div id="beat-2" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT2}}</div>
+      <div id="beat-3" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT3}}</div>
+
+      <div id="cta" class="clip" data-start="7" data-duration="4" data-track-index="4">{{CTA}}</div>
+      <div id="handle" class="clip" data-start="7" data-duration="4" data-track-index="4">{{HANDLE}}</div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      tl.from("#qmark", { scale: 0.5, opacity: 0, duration: 1.0, ease: "power2.out", transformOrigin: "left top" }, 0);
+      tl.from("#hook", { opacity: 0, y: 36, duration: 0.9, ease: "power3.out" }, 0.4);
+      tl.from("#divider", { scaleX: 0, duration: 0.6, ease: "power3.out" }, 1.0);
+      tl.from("#beat-1", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, 2.0);
+      tl.from("#beat-2", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, 2.3);
+      tl.from("#beat-3", { opacity: 0, y: 20, duration: 0.6, ease: "power2.out" }, 2.6);
+      tl.from("#cta", { opacity: 0, y: 22, duration: 0.7, ease: "power3.out" }, 7.0);
+      tl.from("#handle", { opacity: 0, duration: 0.6, ease: "power1.out" }, 7.4);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
