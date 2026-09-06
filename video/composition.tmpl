@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <!--
+      GSAP lokal vendor'landı (assets/gsap.min.js) — render-anı network çağrısı YOK.
+      Fontlar (Playfair Display + Lato) CSS font-family'den Hyperframes derleyicisi
+      tarafından otomatik çekilip deterministik @font-face olarak enjekte edilir.
+      Bu yüzden <link href="fonts.googleapis..."> KOYMA — render'ı network'e bağlar, donar.
+    -->
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px;
+        height: 1350px;
+        overflow: hidden;
+        background: #0D1F2D;
+      }
+      body { font-family: "Lato", sans-serif; color: #F4F1EC; }
+      #root { position: relative; width: 1080px; height: 1350px; }
+
+      .bg-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(8px);
+        opacity: 0.25;
+      }
+      #blob-a { width: 620px; height: 620px; background: #3ABFA7; top: -160px; right: -180px; }
+      #blob-b { width: 520px; height: 520px; background: #D6654F; bottom: -160px; left: -160px; }
+
+      .rail {
+        position: absolute;
+        left: 90px;
+        top: 250px;
+        width: 12px;
+        height: 640px;
+        background: #D6654F;
+        transform-origin: top center;
+      }
+
+      #hook {
+        position: absolute;
+        left: 130px;
+        right: 90px;
+        top: 250px;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 96px;
+        line-height: 1.05;
+        color: #F4F1EC;
+      }
+
+      .beat {
+        position: absolute;
+        left: 130px;
+        right: 90px;
+        font-size: 40px;
+        font-weight: 400;
+        line-height: 1.3;
+        color: #CBD5DC;
+        padding-left: 42px;
+      }
+      .beat::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 16px;
+        width: 20px;
+        height: 20px;
+        background: #3ABFA7;
+        border-radius: 4px;
+      }
+      #beat-1 { top: 640px; }
+      #beat-2 { top: 740px; }
+      #beat-3 { top: 840px; }
+
+      #cta {
+        position: absolute;
+        left: 130px;
+        right: 90px;
+        top: 1030px;
+        font-family: "Playfair Display", serif;
+        font-weight: 700;
+        font-size: 52px;
+        color: #3ABFA7;
+      }
+
+      #handle {
+        position: absolute;
+        left: 130px;
+        top: 1200px;
+        font-size: 34px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #D6654F;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="11"
+      data-width="1080"
+      data-height="1350"
+    >
+      <div id="blob-a" class="clip bg-blob" data-start="0" data-duration="11" data-track-index="0" data-layout-allow-overflow></div>
+      <div id="blob-b" class="clip bg-blob" data-start="0" data-duration="11" data-track-index="0" data-layout-allow-overflow></div>
+
+      <div id="rail" class="clip rail" data-start="0" data-duration="11" data-track-index="1"></div>
+
+      <div id="hook" class="clip" data-start="0" data-duration="11" data-track-index="2">{{HOOK}}</div>
+
+      <div id="beat-1" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT1}}</div>
+      <div id="beat-2" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT2}}</div>
+      <div id="beat-3" class="clip beat" data-start="2" data-duration="9" data-track-index="3">{{BEAT3}}</div>
+
+      <div id="cta" class="clip" data-start="7" data-duration="4" data-track-index="4">{{CTA}}</div>
+      <div id="handle" class="clip" data-start="7" data-duration="4" data-track-index="4">{{HANDLE}}</div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.from("#blob-a", { scale: 0.6, opacity: 0, duration: 1.2, ease: "power2.out" }, 0);
+      tl.from("#blob-b", { scale: 0.6, opacity: 0, duration: 1.2, ease: "power2.out" }, 0.15);
+      tl.from("#rail", { scaleY: 0, duration: 0.8, ease: "power3.out" }, 0.2);
+      tl.from("#hook", { y: 40, opacity: 0, duration: 0.9, ease: "power3.out" }, 0.35);
+
+      tl.from("#beat-1", { x: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 2.0);
+      tl.from("#beat-2", { x: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 2.35);
+      tl.from("#beat-3", { x: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 2.7);
+
+      tl.from("#cta", { y: 24, opacity: 0, duration: 0.7, ease: "power3.out" }, 7.0);
+      tl.from("#handle", { opacity: 0, duration: 0.6, ease: "power1.out" }, 7.4);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

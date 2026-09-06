@@ -1,0 +1,12 @@
+{
+  "name": "x-factory-video",
+  "private": true,
+  "type": "module",
+  "description": "X Content Factory video motoru — Hyperframes kompozisyonu. index.html script tarafından template'ten üretilir.",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.30 preview",
+    "check": "npx --yes hyperframes@0.8.30 check",
+    "lint": "npx --yes hyperframes@0.8.30 lint",
+    "render": "npx --yes hyperframes@0.8.30 render"
+  }
+}

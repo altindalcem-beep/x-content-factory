@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  OPSIYONEL — video motoru launchd agent'ı.
+  install.sh bunu OTOMATIK KURMAZ (.optional uzantısı `*.plist.template` glob'una takılmaz).
+  Video render ağır (Node + headless Chrome + ffmpeg, ~10-15 sn/render). Zero-input felsefesine
+  sadık kalmak için varsayılan MANUEL. Haftalık otomatik istersen elle kur:
+
+    sed "s|__HOME__|$HOME|g" \
+      launchd-templates/com.cemal.x.video.plist.template.optional \
+      > ~/Library/LaunchAgents/com.cemal.x.video.plist
+    plutil -lint ~/Library/LaunchAgents/com.cemal.x.video.plist
+    launchctl load ~/Library/LaunchAgents/com.cemal.x.video.plist
+
+  Aşağıda Cumartesi 10:00 → o günkü brief'ten 1 video üretir.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.cemal.x.video</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>-lc</string>
+        <string>__HOME__/x-content-factory/scripts/video_factory.sh</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>6</integer>
+        <key>Hour</key>
+        <integer>10</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/x-content-factory/logs/video_factory.out</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HOME__/x-content-factory/logs/video_factory.err</string>
+
+    <key>WorkingDirectory</key>
+    <string>__HOME__/x-content-factory</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>__HOME__/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

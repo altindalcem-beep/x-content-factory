@@ -108,6 +108,34 @@ for template in "$FACTORY_DIR"/launchd-templates/*.plist.template; do
     plutil -lint "$target" >/dev/null && echo "   $plist_name kuruldu"
 done
 
+# ---------- 5. Video motoru hazırlık kontrolü ----------
+echo "5) Video motoru (Hyperframes) bağımlılık kontrolü..."
+VIDEO_OK=true
+if command -v node >/dev/null 2>&1; then
+    NODE_MAJOR=$(node -p "process.versions.node.split('.')[0]" 2>/dev/null || echo 0)
+    if [ "$NODE_MAJOR" -ge 22 ]; then
+        echo "   node $(node --version) OK (≥22)"
+    else
+        echo "   ⚠ node $(node --version) — Hyperframes 22+ ister. Güncelle."
+        VIDEO_OK=false
+    fi
+else
+    echo "   ⚠ node yok — video motoru çalışmaz (brew install node)"
+    VIDEO_OK=false
+fi
+if command -v ffmpeg >/dev/null 2>&1; then
+    echo "   ffmpeg OK"
+else
+    echo "   ⚠ ffmpeg yok — render başarısız olur (brew install ffmpeg)"
+    VIDEO_OK=false
+fi
+if [ "$VIDEO_OK" = true ]; then
+    echo "   Video motoru hazır. Test: ./scripts/video_factory.sh \"örnek hook metni\""
+else
+    echo "   Video motoru eksik bağımlılık — diğer 3 motor bundan etkilenmez."
+fi
+echo ""
+
 echo ""
 echo "✅ Install tamam."
 echo ""

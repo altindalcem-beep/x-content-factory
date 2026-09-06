@@ -13,6 +13,18 @@ config/reply-inbox.md
 # Eğer public repo yapacaksan bu satırı aç:
 # config/nis-baglam.md
 
+# Video motoru (Hyperframes) — üretilen/geçici, repo'ya gitmez
+# Not: gitignore satır-içi yorum DESTEKLEMEZ, yorumlar ayrı satırda.
+# Repo'da kalan: composition.tmpl, assets/, inject.mjs, hyperframes.json, package.json
+# her çalışmada template'ten üretilir:
+video/index.html
+# MP4 çıktıları (drafts/'a kopyalanır, orada da gitignore):
+video/renders/
+video/node_modules/
+# hyperframes cihaz-lokal metadata + cache:
+video/meta.json
+video/.hyperframes/
+
 # macOS
 .DS_Store
 *.swp
