@@ -1,0 +1,55 @@
+{
+  "draft": true,
+  "version": "0.1.0",
+  "scale": {
+    "min": 0,
+    "max": 4
+  },
+  "bands": [
+    { "min": 0,  "label": "[BANT 1 ADI]", "meaning": "[Bu bandin anlami, tek cumle]" },
+    { "min": 25, "label": "[BANT 2 ADI]", "meaning": "[...]" },
+    { "min": 50, "label": "[BANT 3 ADI]", "meaning": "[...]" },
+    { "min": 75, "label": "[BANT 4 ADI]", "meaning": "[...]" }
+  ],
+  "dimensions": [
+    {
+      "id": "d1",
+      "name": "[BOYUT 1 ADI]",
+      "summary": "[Bu boyut neyi olcer, tek cumle]",
+      "weight": 1,
+      "questions": [
+        {
+          "id": "d1_q1",
+          "text": "[Soru metni]",
+          "probe": "[Cevap belirsizse sorulacak takip sorusu]",
+          "levels": [
+            "0: [Seviye 0 tanimi]",
+            "1: [Seviye 1 tanimi]",
+            "2: [Seviye 2 tanimi]",
+            "3: [Seviye 3 tanimi]",
+            "4: [Seviye 4 tanimi]"
+          ]
+        }
+      ],
+      "recommendations": [
+        "[Bu boyut zayifsa onerilecek somut adim]"
+      ]
+    },
+    { "id": "d2", "name": "[BOYUT 2 ADI]", "summary": "[...]", "weight": 1,
+      "questions": [{ "id": "d2_q1", "text": "[...]", "probe": "[...]", "levels": ["0: [...]", "1: [...]", "2: [...]", "3: [...]", "4: [...]"] }],
+      "recommendations": ["[...]"] },
+    { "id": "d3", "name": "[BOYUT 3 ADI]", "summary": "[...]", "weight": 1,
+      "questions": [{ "id": "d3_q1", "text": "[...]", "probe": "[...]", "levels": ["0: [...]", "1: [...]", "2: [...]", "3: [...]", "4: [...]"] }],
+      "recommendations": ["[...]"] },
+    { "id": "d4", "name": "[BOYUT 4 ADI]", "summary": "[...]", "weight": 1,
+      "questions": [{ "id": "d4_q1", "text": "[...]", "probe": "[...]", "levels": ["0: [...]", "1: [...]", "2: [...]", "3: [...]", "4: [...]"] }],
+      "recommendations": ["[...]"] },
+    { "id": "d5", "name": "[BOYUT 5 ADI]", "summary": "[...]", "weight": 1,
+      "questions": [{ "id": "d5_q1", "text": "[...]", "probe": "[...]", "levels": ["0: [...]", "1: [...]", "2: [...]", "3: [...]", "4: [...]"] }],
+      "recommendations": ["[...]"] },
+    { "id": "d6", "name": "[BOYUT 6 ADI]", "summary": "[...]", "weight": 1,
+      "questions": [{ "id": "d6_q1", "text": "[...]", "probe": "[...]", "levels": ["0: [...]", "1: [...]", "2: [...]", "3: [...]", "4: [...]"] }],
+      "recommendations": ["[...]"] }
+  ],
+  "next_step": "[Rapor sonu metni: danismanlik/workshop davet cumlesi ve iletisim linki]"
+}

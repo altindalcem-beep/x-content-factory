@@ -1,0 +1,8 @@
+{
+  "name": "ai-first-index",
+  "displayName": "AI-First Index",
+  "version": "0.1.0",
+  "description": "Measure how AI-ready a company is across six dimensions. Claude interviews you, scores each dimension with a fixed rubric, and writes a maturity report with the three highest-impact next steps.",
+  "author": { "name": "Cem Altındal" },
+  "license": "MIT"
+}
