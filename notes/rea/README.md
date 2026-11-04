@@ -53,12 +53,20 @@ Güncelleme sonrası ajan kaydını yenilemek için: `npx rea-agents@latest setu
 - Üçüncü taraf uygulamanın özelliğini kopyalamadan önce repodaki DISCLAIMER.md okunur.
 - Paket çalıştırmadan önce güvenilir bir dizinde çalış, hedef proje içinde değil.
 
+## Kurulum durumu (Mac, 2026-11-04)
+
+- Node 26.13.0 (Homebrew). `brew install node@24` sırasında simdjson yükselip Node 26.8.1'i bozdu, `brew upgrade node` ile düzeltildi. node@24 hâlâ kurulu, gereksiz.
+- REA 6.8.0: Claude Code'a MCP olarak kayıtlı (`~/.claude.json`, yedek `~/.claude.json.rea.backup`). Skill: `~/.claude/skills/reverse-engineer-anything`.
+- Ghidra 12.1.4 (resmi zip, SHA-256 doğrulandı): `~/tools/ghidra_12.1.4_PUBLIC`. macOS arm64 decompiler elle derlendi (docs/installation.md "macOS arm64 native decompiler").
+- JDK 25 (Homebrew openjdk@25). `JAVA_HOME` ve `GHIDRA_INSTALL_DIR` MCP kaydının env bölümünde.
+- `rea doctor --provider ghidra` sağlıklı. Gerçek bir analiz henüz denenmedi.
+- Homebrew'daki Ghidra 12.2 de kurulu ama REA 6.8.0 onu reddediyor (yalnızca 12.1.x kabul). Kullanılmıyor.
+- Hopper, IDA, JADX, Kuna kurulu değil.
+
 ## Açık sorular (doldurulacak)
 
 - [ ] Hedef türü: Electron mı, native mi, web mi?
 - [ ] Native ise hangi motor: Hopper (ücretli) mi, Ghidra (ücretsiz) mı?
-- [ ] Mac'te Node sürümü şartı karşılıyor mu?
-- [ ] Kurulum yapıldı mı, tarih ve sürüm:
 
 ## Referans
 
